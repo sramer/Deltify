@@ -12,6 +12,13 @@ const ArtistSchema = mongoose.Schema({
     bio: {
         type: String,
         required: true
+    },
+    songs: [
+        {type: mongoose.Schema.Types.ObjectId, ref:"Song"}
+    ],
+    avsr: {
+        type: String,
+        default: "0"
     }
 })
 
