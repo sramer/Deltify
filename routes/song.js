@@ -12,10 +12,9 @@ song.get("/", async (req,res) => {
         const rating = song.map(sng => sng.rating).map(rat => Object.values(rat))
         const getRating = rating.map(rate => getSongRating(rate))
         const calculateRating = getRating.reduce((total,num) => total+num)
-        console.log(calculateRating)
         res.json(song)
     } catch (err) {
-        console.log(err)
+        res.json({message: err})
     }
 })
 
@@ -40,7 +39,7 @@ song.post("/", async (req,res) => {
         }
         res.json(saveSong)
     } catch (err) {
-        console.log(err)
+        res.json({message: err})
     }
 })
 
@@ -99,7 +98,7 @@ song.patch("/:id/:rating", async (req,res) => {
                 const updateRating = await Song.findOneAndUpdate({_id: req.params.id}, {$set: {'rating.4': newRating, avr: songRating}})
                 res.json(updateRating)
             } catch (err) {
-                console.log(err)
+                res.json({message: err})
             }
             break;
         case 5:

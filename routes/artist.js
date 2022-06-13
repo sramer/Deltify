@@ -9,14 +9,11 @@ artist.get("/", async (req,res) => {
     try {
         const artist = await Artist.find().populate('songs');
         // const getArtist = artist.map(artst => getArtistRating(artst))
-        for(i=0; i<artist.length; i++) {
+        for(let i=0; i<artist.length; i++) {
             id = artist[i]._id
             const getArtist = (await getArtistRating(artist[i])).toString()
-            console.log(getArtist)
             const updateArtist = await Artist.findOneAndUpdate({_id: id}, {$set: {avsr: getArtist}})
-            // console.log(updateArtist)
         } 
-        // console.log(getArtist)
         res.json(artist)
     } catch (err) {
         console.log(err)
@@ -47,7 +44,7 @@ artist.get("/:id", async (req,res) => {
         console.log(artistRating)
         res.json(findArtist)
     } catch (err) {
-        console.log(err)
+        res.json({message: err})
     }
 }) 
 
@@ -80,6 +77,10 @@ const getArtistRating = async (artist) => {
     const getSongRating = songs.map(song => parseFloat(song.avr))
     const calculateSongRating = getSongRating.reduce((total,num) => total+num)
     const getAverageRating = artist.songs.map(song => parseFloat(song.avr));
-    const calculateArtistRating = getAverageRating.reduce((total,num) => total+num);
-    return calculateSongRating / calculateArtistRating
+    if(getAverageRating.length > 0) {
+        const calculateArtistRating = getAverageRating.reduce((total,num) => total+num);
+        return calculateArtistRating / calculateSongRating
+    } else {
+        return 0;
+    }
 }
