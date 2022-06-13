@@ -134,7 +134,7 @@ song.get("/:id", async (req,res) => {
 
 module.exports = song;
 
-// Evan Miller Bayesian approch algorith
+// Evan Miller Bayesian approch algorithm
 
 const getSongRating = (rating) => {
 
